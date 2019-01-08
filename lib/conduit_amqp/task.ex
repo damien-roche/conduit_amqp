@@ -18,11 +18,11 @@ defmodule ConduitAMQP.Task do
         Basic.ack(chan, props.delivery_tag)
 
       %Message{status: :nack} ->
-        Basic.reject(chan, props.delivery_tag)
+        Basic.reject(chan, props.delivery_tag, requeue: false)
     end
   catch
     _error ->
-      Basic.reject(chan, props.delivery_tag)
+      Basic.reject(chan, props.delivery_tag, requeue: false)
   end
 
   defp build_message(source, payload, props) do
